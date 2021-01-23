@@ -29,6 +29,7 @@ import android.widget.*;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
     Button stopButton;
 //--------------------------------------------------
     TextView statusLabel2;
+    TextView statusLabel3;
     int maximo=10;
+     static int contador;
 //---------------------------------------------------
     Camera mCamera;
     private static Handler handlerNetworkExecutorResult;
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         statusLabel = (TextView) findViewById(R.id.textView);
         statusLabel2 = (TextView) findViewById(R.id.textView2);
+        statusLabel3 = (TextView) findViewById(R.id.textView3);
         connectButton = (Button) findViewById(R.id.connectButton);
         disconnectButton = (Button) findViewById(R.id.disconnectButton);
         forwardButton = (Button) findViewById(R.id.forButton);
@@ -115,9 +119,16 @@ public class MainActivity extends AppCompatActivity {
                     left();
                 } else if (msg.obj.equals("RIGHT")) {
                     right();
-                } else if (msg.obj.equals("CAMERA")) {
-                    captureCamera();
+                }else if(msg.obj.equals("CONTADOR")){
+                    try {
+                        contador();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+               /* } else if (msg.obj.equals("CAMERA")) {
+                    captureCamera();
+                }*/
             }
             }
         };
@@ -309,24 +320,81 @@ public class MainActivity extends AppCompatActivity {
             bytes2 = btSocket.getInputStream().read(buffer);
             String readMessage = new String(buffer, 0, bytes2);
 
-           // String readMessageCopia=readMessage;
+            String leer = readMessage.replaceAll("\\s","");
+            int leerInt = Integer.parseInt(leer);
+            this.contador=leerInt;
+            //contador();
 
-            //int readMessageEntero=parseInt(readMessageCopia);
-            //System.out.println(readMessageCopia);
-           // System.out.println(maximo+"");
+            int compMax = maximo;
+            if(leerInt==compMax) {
+                statusLabel3.setText("Aforo máximo alcanzado");
+            }
 
-           // if(readMessageCopia.equals(maximo+"")){
-            //    statusLabel.setText("Aforo maximo alcanzado");
-            //}else{
                 statusLabel.setText("Aforo actual: " + readMessage);
-           // }
+
+
+
+
+
+            /*String readMessageCopia=readMessage;
+
+            int readMessageEntero=parseInt(readMessageCopia);
+            System.out.println(readMessageCopia);
+            System.out.println(maximo+"");
+            */
+
+           /* System.out.println("Read Message:"+leerInt);
+            int compMax = maximo;
+
+            System.out.println("Maximo:"+maximo);
+           //String max= String.valueOf(maximo);
+            if (compMax==leerInt){
+                System.out.println("Hola");
+            }
+
+            //if(!readMessage.equals(max)){
+                //statusLabel.setText("Aforo actual: " + readMessage);
+
+            /*}else{
+                statusLabel.setText("Aforo maximo alcanzado");
+           }*/
 
 
         } catch (Exception e) {
             Log.e("forward", "ERROR:" + e);
         }
     }
+    public void contador() throws IOException {
+        String tmpStr = this.contador+"";
+        byte[] bytes = tmpStr.getBytes();
+        byte[] buffer = new byte[256];
+        if (outputStream != null) outputStream.write(bytes);
+        if (outputStream != null) outputStream.flush();
+        /*FileOutputStream fos = new FileOutputStream(String.valueOf(contador));
 
+        fos.close();*/
+    }
+    public static int getCont(){
+        return contador;
+    }
+    public static File getContador(){
+        if (mediaStorageDir == null){
+            mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyCameraApp");
+            // mediaStorageDir = new File(Environment.getExternalStorageDirectory().toString(),"MyCameraApp");
+
+            if (!mediaStorageDir.exists()) {
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.d("MyCameraApp", "failed to create directory");
+                    return null;
+                }
+            }
+        }
+
+        if (mediaFile==null) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator + getCont()+"");
+        }
+        return mediaFile;
+    }
     public void left() {
         try {
             //--------------

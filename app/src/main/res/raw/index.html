@@ -6,6 +6,7 @@
 
         <script type="text/JavaScript">
         function timedRefresh() {
+
             objectToBeRefreshed = document.camerainput;
             objectToBeRefreshed.src = objectToBeRefreshed.src + "?" +Math.random();
             //Call the timedRefresh() function again after 1000 milliseconds
@@ -15,7 +16,8 @@
     </head>
     <body>
             <body onload="JavaScript:timedRefresh();">
-            <img src="camera.jpg" height="50%" id="camerainput">
+          <!--  <img src="camera.jpg" height="50%" id="camerainput"> -->
+                <label id="camera.input"></label>
             <br>
             <a href="/forward">Forward</a>
             <br>
