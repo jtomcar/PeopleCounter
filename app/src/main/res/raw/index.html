@@ -1,38 +1,209 @@
 <!DOCTYPE html>
+<html>
     <head>
-        <title>
-            TELEROBOT VERSION 2.0 5/12/2018
-        </title>
-
-        <script type="text/JavaScript">
-        function timedRefresh() {
-
-            objectToBeRefreshed = document.camerainput;
-            objectToBeRefreshed.src = objectToBeRefreshed.src + "?" +Math.random();
-            //Call the timedRefresh() function again after 1000 milliseconds
-            setTimeout("timedRefresh()",1000);
-            }
-        </script>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <title>People Counter</title>
     </head>
-    <body>
-            <body onload="JavaScript:timedRefresh();">
-          <!--  <img src="camera.jpg" height="50%" id="camerainput"> -->
-                <label id="camera.input"></label>
+    <div class="container" style="background: rgba(9, 115, 186, 0.1); width:100%;">
+            <table style="width:100%;"><tr><td style="text-align: left;"><a href="https://www.uji.es/"><img src="https://static.uji.es/templates/uji2016_plantillas/static/images/logouji30a.jpg" width="300" height="38" ></a></td><td style="text-align: right;"><p style="font-size:80%;">Idioma: Español | EI1057&nbsp;&nbsp;&nbsp;</p></td></tr></table>
+    </div>
+    <body style="background-color:#F0F8FF;">
+        <div class="container" style="width:100%;" >
             <br>
-            <a href="/forward">Forward</a>
+            <table style="width:100%;"><tr><td style="text-align: center;"><img src="http://imgfz.com/i/3x85voT.png" width="1000" height="333"></td></tr></table>
+            <div style="width:100%; background-color: #3f48cc;">
+                <br>
+            </div>
+            <div style="width:100%; background-color:#0973ba;">
+                <br>
+                <table style="width:100%;">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td style="text-align: left;"><button type="button" class="btn btn-danger" onclick="location.href='http://infocoronavirus.gva.es/va'"><img src="http://imgfz.com/i/WKZzA20.png" width="80" height="45" ><b>Alerta sobre el COVID-19</b></button>&nbsp;&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                </table>
+                <br>
+            </div>
+            <div style="width:100%; background-color: #0973ba;">
+                <p style="font-size:80%; color:white;">&nbsp;Estas en: inicio</p>
+            </div>
+        </div>
+        <div class="container" style="background: rgba(255, 255, 255, 0.2);" >
+            <div>
+                <br>
+                <table style="width:100%; text-align: justify;">
+                    <tr>
+                        <td>
+                            <h3>En primer lugar, si etás leyendo esto, gracias por adquirir o construir tu mismo People Counter.</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3><b>¿Que es People Counter?</b></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>People Counter consiste en un dispositivo Arduino que lleva un control de aforo de personas en lugares donde se necesite. Ese dispositivo irá conectado mediante bluetooh a una aplicación Ardroid, que crearemos y luego instalaremos en un telefono movil. <br> Además puedes definir un aforo máximo de personas que puedan estar en el habitaculo por de seguridad, para cumplir las distintas normativas, u otros motivos, y cuando se ha llegado a este máximo, en la aplicación movil saldrá un aviso indicandolo.</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <hr style="border: 10px solid CornflowerBlue;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+                <div>
+                    <table style="width:100%; text-align: justify;">
+                        <tr>
+                            <td>
+                                <img src="http://imgfz.com/i/kRHMygI.png"width="110" height="110"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/ukKA6za.png"width="100" height="100"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/qs8lamc.png"width="100" height="100"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/viJDuBI.png"width="100" height="100"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/76euT0y.png"width="100" height="100"><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <hr style="border: 10px solid CornflowerBlue;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  colspan="5">
+                                <h3 style="font-size: 30px;"><img src="http://imgfz.com/i/Gn02dtN.png"width="100" height="100"><b> &nbsp;No quiero comprar el producto, prefiero construirlo yo mismo</b></h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  colspan="5">
+                                <h3>En cuanto a costes, es donde nuestro producto destaca, ya que con artículos muy económicos conseguimos un producto mejor que los que existen actualmente en el mercado, que cuestan alrededor de 200 euros, veamos con más detalle el coste de nuestro producto. Pulsando el enlace, os llevara direcamente a la compra de cada artículo.
+                                </h3>
+                                <ol style="font-size: 23px;">
+                                    <li>ARDUINO UNO REV 3, cuesta 24,20 € en la plataforma de <a href="https://www.amazon.es/Arduino-UNO-A000066-microcontrolador-ATmega328/dp/B008GRTSV6">Amazon</a><img src="http://imgfz.com/i/vAauNSl.png"width="50" height="50"></li>
+                                    <li>Modulo Bluetooth HC05, cuesta 7,99 € en la plataforma de <a href="https://www.amazon.es/ARCELI-Bluetooth-inal%C3%A1mbrico-Transceptor-Esclavo/dp/B077XY7CD5/ref=sr_1_5?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=Modulo+Bluetooth+HC05&qid=1611507100&s=electronics&sr=1-5">Amazon</a><img src="http://imgfz.com/i/vAauNSl.png"width="50" height="50"></li>
+                                    <li>Módulo Infrarrojo Electrely, 10,99 € en la plataforma <a href="https://www.amazon.es/Electrely-Obst%C3%A1culos-Infrarrojos-Inteligente-Fotoel%C3%A9ctrica/dp/B07G38MXW8/ref=sr_1_1?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=M%C3%B3dulo+Infrarrojo+Electrely&qid=1611507135&s=electronics&sr=1-1">Amazon</a><img src="http://imgfz.com/i/vAauNSl.png"width="50" height="50"></li>
+                                    <li>Android Studio, <a href="https://developer.android.com/studio"> versión gratuita</a><img src="http://imgfz.com/i/vAauNSl.png"width="50" height="50"></li>
+                                    <li>Arduino IDE, <a href="https://www.arduino.cc/en/guide/windows#toc1"> versión gratuita</a><img src="http://imgfz.com/i/vAauNSl.png"width="50" height="50"></li>
+                                    <li>Otros productos (led, resistencias, base, …), 10,00 €, en <a href="https://www.amazon.es/Electr%C3%B3nicos-Resistencias-Condensadores-Potenci%C3%B3metro-Especificaciones/dp/B01MRIG6YM/ref=sr_1_5?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=DG8Y0I85KNH8&dchild=1&keywords=arduino+componentes&qid=1611507292&sprefix=arduino+compon%2Caps%2C196&sr=8-5">Amazon</a><img src="http://imgfz.com/i/vAauNSl.png"width="50" height="50"></li>
+                                </ol>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="text-align: center;"><button type="button" class="btn btn-primary" onclick="location.href='https://docs.google.com/document/d/1IbkxtpK_3I07xXlmYOPu1e7XtGAbS0uYgjfRyOwYgvE/edit?usp=sharing'">
+                                <img src="http://imgfz.com/i/vl4HEAR.png"width="45" height="45" align="left"><b style="font-size:23px;">
+                                &nbsp;Manual y descripión del dispositivo</b></button></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td  colspan="5">
+                                <hr style="border: 10px solid CornflowerBlue;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="http://imgfz.com/i/kRHMygI.png"width="110" height="110"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/ukKA6za.png"width="100" height="100"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/qs8lamc.png"width="100" height="100"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/viJDuBI.png"width="100" height="100"><br>
+                            </td>
+                            <td>
+                                <img src="http://imgfz.com/i/76euT0y.png"width="100" height="100"><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <hr style="border: 10px solid CornflowerBlue;">
+                            </td>
+                        </tr>
+                        <td  colspan="5">
+                            <h3 style="font-size: 30px;"><img src="http://imgfz.com/i/ErWoDwu.png"width="80" height="80"><b> &nbsp;Funcionamiento del dispositivo</b></h3>
+                        </td>
+                    </table>
+                    <br>
+                </div>
+            <table style="width:100%; text-align: center;">
+                <tr>
+                    <td>
+                        <iframe width="800" height="450" src="https://www.youtube.com/embed/NWMRx4G9zjo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                    </td>
+                </tr>
+            </table>
             <br>
-            <a href="/backward">Backward</a>
+        </div>
+        <br>
+        <div class="container" style="background: rgba(9, 115, 186, 0.2) " >
+            <table style="width:100%; text-align: center;">
+            </table>
+        </div>
+        <div style="width:100%;background-color:#4169E1;color:white;"><p class="body">
+            <div style="background: rgba(17, 21, 82, 0.3"><h6 class="mb-0"><br><br></h6></div>
             <br>
-            <a href="/left">Left</a>
+            <table style="width:100%; ">
+                <tr>
+                    <td style="text-align: center;">
+                        <img src="http://imgfz.com/i/qShLEtf.png"width="120" height="90"><br>
+                    </td>
+                    <td style="text-align: center; color:#D8D8D8;">
+                        © PEOPLE COUNTER. Copyright 2021. TODOS LOS DERECHOS RESERVADOS.  √ Usamos Cookies
+                    </td>
+                    <td style="text-align: center; color:#D8D8D8;">
+                        UNA MARCA DE
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <a style="color:#D8D8D8; font-size:16px; text-align: right;" > Telefono: 920 52 52 85</a>
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="http://www.ivaj.gva.es/va/"><img src="https://www.gva.es/contenidos/publicados/multimedia/estaticos/boton_ivaj_val.jpg"></a></td>
+
+                    <td  style="text-align: center;">
+                        <img src="http://imgfz.com/i/3D6E0iG.png" width="120" height="50" >
+                    </td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td>
+                        <a style="color:#D8D8D8; font-size:14px;" href="mailto:al375877@uji.es">peoplecounter@gva.es</a><br>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+            <table align="center" border="0">
+                <td><a href="https://www.facebook.com/" target="_blank"><img src="https://image.flaticon.com/icons/svg/145/145802.svg" width="40" height="40"></a></td><td>&nbsp;Facebook&nbsp;&nbsp;</td>
+                <td><a href="https://twitter.com/" target="_blank"><img src="https://image.flaticon.com/icons/svg/145/145812.svg" width="40" height="40"></a></td><td>&nbsp;Twitter&nbsp;&nbsp;</td>
+                <td><a href="https://www.instagram.com/" target="_blank"><img src="https://image.flaticon.com/icons/svg/185/185985.svg" width="40" height="40"></a></td><td>&nbsp;Instagram&nbsp;&nbsp;</td>
+                <td><a href="https://www.youtube.es/" target="_blank"  style="color:white;"><img src="https://image.flaticon.com/icons/svg/185/185983.svg" width="40" height="40">&nbsp;Youtube&nbsp;&nbsp;</a></td><td></td>
+            </table>
             <br>
-            <a href="/right">Right</a>
-            <br>
-            <a href="/stop">Stop</a>
-            <br>
-            <form name="input" action="message" method="get">
-                SHOW MESSAGE: <input type="text" name="text">
-                <input type="submit" value="Submit">
-            </form>
-        </body>
+        </div>
     </body>
 </html>

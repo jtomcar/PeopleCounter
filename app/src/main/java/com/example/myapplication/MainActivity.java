@@ -13,13 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.hardware.Camera;
-import android.net.wifi.aware.DiscoverySession;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -27,56 +22,38 @@ import android.view.View;
 import android.widget.*;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.stream.Stream;
 
-import static java.lang.Integer.parseInt;
 
 //*****************************************************************************************
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int PERMISSION_REQUEST_CAMERA = 1;
-
-    //private static final UUID UUID = ;
     public static Boolean bluetoothActive = false;
-    private static File mediaStorageDir;
-    private static File mediaFile;
     private ArrayList<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>();
     BluetoothAdapter bluetooth = BluetoothAdapter.getDefaultAdapter();
 
     Button connectButton;
     Button disconnectButton;
-    Button forwardButton;
-    Button backwardButton;
-    Button turnLeftForwardButton;
-    Button turnRightForwardButton;
+    Button updateButton;
+    Button UPMaximumButton;
+    Button DOWNMaximumButton;
     TextView statusLabel;
 
     BluetoothSocket btSocket;
     InputStream inputStream;
     OutputStream outputStream;
-    Button stopButton;
 //--------------------------------------------------
     TextView statusLabel2;
     TextView statusLabel3;
     int maximo=10;
      static int contador;
 //---------------------------------------------------
-    Camera mCamera;
-    private static Handler handlerNetworkExecutorResult;
-
-    FrameLayout cameraPreviewFrameLayout;
-    CameraPreview mCameraPreview;
 
     NetworkExecutor networkExecutor;
 
@@ -93,45 +70,10 @@ public class MainActivity extends AppCompatActivity {
         statusLabel3 = (TextView) findViewById(R.id.textView3);
         connectButton = (Button) findViewById(R.id.connectButton);
         disconnectButton = (Button) findViewById(R.id.disconnectButton);
-        forwardButton = (Button) findViewById(R.id.forButton);
-        turnLeftForwardButton= (Button) findViewById(R.id.leftButton);
-        turnRightForwardButton= (Button) findViewById(R.id.rightButton);
-        //cameraPreviewFrameLayout = (FrameLayout) findViewById(R.id.cameraView);
+        updateButton = (Button) findViewById(R.id.updateButton);
+        UPMaximumButton= (Button) findViewById(R.id.UPMaximumButton);
+        DOWNMaximumButton= (Button) findViewById(R.id.DOWNMaximumButton);
 
-//        mCamera = getCameraInstance();
-//        if(mCamera == null ){
-//            Log.d("CAMARA", "Camara es null");
-//            System.exit(-1);
-//        }
-//        mCameraPreview = new CameraPreview(this, mCamera);
-//        cameraPreviewFrameLayout = (FrameLayout) findViewById(R.id.cameraView);
-//        cameraPreviewFrameLayout.addView(mCameraPreview);
-
-        handlerNetworkExecutorResult = new Handler() {
-            public void handleMessage(Message  msg) {
-            Log.d("handlerNetworkExecutor", (String) msg.obj);
-            if (msg != null) {
-                if (msg.obj.equals("FORWARD")) {
-                    forward();
-                } else if (msg.obj.equals("BACKWARD")) {
-                    backward();
-                } else if (msg.obj.equals("LEFT")) {
-                    left();
-                } else if (msg.obj.equals("RIGHT")) {
-                    right();
-                }else if(msg.obj.equals("CONTADOR")){
-                    try {
-                        contador();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-               /* } else if (msg.obj.equals("CAMERA")) {
-                    captureCamera();
-                }*/
-            }
-            }
-        };
 
         this.indexhtml = readResourceTextFile();
 
@@ -140,40 +82,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private android.hardware.Camera getCameraInstance() {
-        android.hardware.Camera camera = null;
-        try {
-            if (!haveCameraPermission())
-                Log.d("PERMISOS CAMARA", " NO TIENE PERMISOS");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
-            }
-            camera = android.hardware.Camera.open(0);
-            System.out.println("CAMARA -> ");
-            return camera;
-        } catch (Exception e) {
-            // cannot get camera or does not exist
-            Log.d("getCameraInstance", "ERROR" + e);
-        }
-        return camera;
-    }
 
-    private boolean haveCameraPermission()
-    {
-        if (Build.VERSION.SDK_INT < 23)
-            return true;
-        return checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    public void onClickupdateButton(View view){
+        update();
     }
-
-    public void onClickForwardButton(View view){
-        forward();
+    public void onClickUPMaximumButton(View view){
+        up();
     }
-    public void onClickStopButton(View view){
-        stop();
-    }
-    public void onClickTurnLeftForwardButton(View view){left();    }
-    public void onClickTurnRightForwardButton(View view){
-        right();
+    public void onClickDOWNMaximumButton(View view){
+        down();
     }
 
     public void onClickConnectButton(View view){
@@ -182,29 +99,26 @@ public class MainActivity extends AppCompatActivity {
             String address = bluetooth.getAddress();
             String name = bluetooth.getName();
             //Mostramos la datos en pantalla (The information is shown in the screen)
-            Toast.makeText(getApplicationContext(),"Bluetooth ENABLED:"+name+":"+address,
+            Toast.makeText(getApplicationContext(),"Bluetooth ACTIVADO:"+name+":"+address,
                     Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(getApplicationContext(),"Bluetooth NOT enabled",
+            Toast.makeText(getApplicationContext(),"Bluetooth No disponible",
                     Toast.LENGTH_SHORT).show();
         }
         startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE),1);
         bluetoothActive = true;
         Toast.makeText(getApplicationContext(),
-                "Bluetooth active " + bluetoothActive,
+                "Bluetooth activado " + bluetoothActive,
                 Toast.LENGTH_SHORT).show();
         startDiscovery();
-        statusLabel.setText("Connect pressed");
+        statusLabel.setText("Conectando...");
     }
     public void onClickDissconnectedButton(View view){
         if(bluetoothActive){
             bluetooth.disable();
         }
-        statusLabel.setText("Connect down");
+        statusLabel.setText("No se puede conectar");
     }
-
-
-
 
     BroadcastReceiver discoveryResult = new BroadcastReceiver() {
         @Override
@@ -218,11 +132,6 @@ public class MainActivity extends AppCompatActivity {
             //Guardamos el dispositivo encontrado en la lista
             deviceList.add(remoteDevice);
 
-//            statusLabel.setText("Discovered "+ remoteDeviceName+"\nRSSI "+ rssi + "dBm");
-//            //Mostramos el evento en el Log
-//            Log.d("MyFirstApp", "Discovered "+ remoteDeviceName);
-//            Log.d("MyFirstApp", "RSSI "+ rssi + "dBm");
-
             try {
                 if (remoteDevice != null && remoteDeviceName.equals("JonatanBT")) {
                     //   Log.d("onReceive", "Discovered SUM_SCH3:connecting");
@@ -233,14 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MyFirstApp", "Recogida excepción");
 
             }
-
-/*            remoteDevice = bluetooth.getRemoteDevice("4c:74:03:c8:70:da");
-            connect(remoteDevice); */
         }
     };
-
-
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -303,13 +206,10 @@ public class MainActivity extends AppCompatActivity {
             Log.e("ERROR: connect", ">>", e);
         }
 
-       /* device = bluetooth.getRemoteDevice("30:85:A9:51:1A:A6");
-        connect(device);*/
     }
 
-
     // Movimiento del robot
-    public void forward() {
+    public void update() {
         try {
             String tmpStr = "0";
             byte[] bytes = tmpStr.getBytes();
@@ -333,86 +233,27 @@ public class MainActivity extends AppCompatActivity {
                 statusLabel.setText("Aforo actual: " + readMessage);
 
 
-
-
-
-            /*String readMessageCopia=readMessage;
-
-            int readMessageEntero=parseInt(readMessageCopia);
-            System.out.println(readMessageCopia);
-            System.out.println(maximo+"");
-            */
-
-           /* System.out.println("Read Message:"+leerInt);
-            int compMax = maximo;
-
-            System.out.println("Maximo:"+maximo);
-           //String max= String.valueOf(maximo);
-            if (compMax==leerInt){
-                System.out.println("Hola");
-            }
-
-            //if(!readMessage.equals(max)){
-                //statusLabel.setText("Aforo actual: " + readMessage);
-
-            /*}else{
-                statusLabel.setText("Aforo maximo alcanzado");
-           }*/
-
-
         } catch (Exception e) {
-            Log.e("forward", "ERROR:" + e);
+            Log.e("update", "ERROR:" + e);
         }
     }
-    public void contador() throws IOException {
-        String tmpStr = this.contador+"";
-        byte[] bytes = tmpStr.getBytes();
-        byte[] buffer = new byte[256];
-        if (outputStream != null) outputStream.write(bytes);
-        if (outputStream != null) outputStream.flush();
-        /*FileOutputStream fos = new FileOutputStream(String.valueOf(contador));
 
-        fos.close();*/
-    }
-    public static int getCont(){
-        return contador;
-    }
-    public static File getContador(){
-        if (mediaStorageDir == null){
-            mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyCameraApp");
-            // mediaStorageDir = new File(Environment.getExternalStorageDirectory().toString(),"MyCameraApp");
-
-            if (!mediaStorageDir.exists()) {
-                if (!mediaStorageDir.mkdirs()) {
-                    Log.d("MyCameraApp", "failed to create directory");
-                    return null;
-                }
-            }
-        }
-
-        if (mediaFile==null) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator + getCont()+"");
-        }
-        return mediaFile;
-    }
-    public void left() {
+    public void up() {
         try {
             //--------------
             maximo+=1;
             statusLabel2.setText("Máximo: " + maximo);
             //-------------
             String tmpStr = maximo+"";
-            //byte[] bytes = tmpStr.getBytes();
-            //String tmpStr = "L";
             byte[] bytes = tmpStr.getBytes();
             if (outputStream != null) outputStream.write(bytes);
             if (outputStream != null) outputStream.flush();
         } catch (Exception e) {
-            Log.e("left", "ERROR:" + e);
+            Log.e("up", "ERROR:" + e);
         }
     }
 
-    public void right() {
+    public void down() {
         try {
             //------------------
             maximo-=1;
@@ -425,90 +266,8 @@ public class MainActivity extends AppCompatActivity {
             if (outputStream != null) outputStream.write(bytes);
             if (outputStream != null) outputStream.flush();
         } catch (Exception e) {
-            Log.e("right", "ERROR:" + e);
+            Log.e("down", "ERROR:" + e);
         }
-    }
-
-    public void stop() {
-        try {
-            String tmpStr = "S";
-            byte bytes[] = tmpStr.getBytes();
-            if (outputStream != null) outputStream.write(bytes);
-            if (outputStream != null) outputStream.flush();
-        } catch (Exception e) {
-            Log.e("stop", "ERROR:" + e);
-        }
-    }
-    private void backward() {
-        try {
-            String tmpStr = "B";
-            byte bytes[] = tmpStr.getBytes();
-            if (outputStream != null) outputStream.write(bytes);
-            if (outputStream != null) outputStream.flush();
-        } catch (Exception e) {
-            Log.e("stop", "ERROR:" + e);
-        }
-
-    }
-
-    public static File getOutputMediaFile() {
-        if (mediaStorageDir == null){
-            mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"MyCameraApp");
-           // mediaStorageDir = new File(Environment.getExternalStorageDirectory().toString(),"MyCameraApp");
-
-            if (!mediaStorageDir.exists()) {
-                if (!mediaStorageDir.mkdirs()) {
-                    Log.d("MyCameraApp", "failed to create directory");
-                    return null;
-                }
-            }
-        }
-
-        if (mediaFile==null) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG.jpg");
-        }
-        return mediaFile;
-    }
-
-    public void captureCamera(){
-
-        if (mCamera!=null) {
-            try {
-                mCamera.takePicture(null, null, mPicture);
-            }catch (Exception ex){
-                System.out.println("EL ERROR "+ex.toString());
-                ex.printStackTrace();
-                System.exit(-1);
-            }
-        }
-    }
-
-    android.hardware.Camera.PictureCallback mPicture = new android.hardware.Camera.PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] data, android.hardware.Camera camera) {
-            byte[] resized = resizeImage(data);
-
-            mCamera.startPreview();
-
-            File pictureFile = getOutputMediaFile();
-            if (pictureFile == null) {
-                return;
-            }try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(resized);
-                fos.close();
-            } catch (Exception e) {
-                Log.e("onPictureTaken", "ERROR:" + e);
-            }
-        }
-    };
-
-    byte[] resizeImage(byte[] input) {
-        Bitmap originalBitmap = BitmapFactory.decodeByteArray(input, 0, input.length);
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 80, 107,true);
-        ByteArrayOutputStream blob = new ByteArrayOutputStream();
-        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, blob);
-        return blob.toByteArray();
     }
 
     public String readResourceTextFile() {
@@ -525,13 +284,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return fileStr;
-    }
-
-    public static void showDisplayMessage(String displayMessage) {
-        Message msg = new Message();
-        msg.arg1 = 0;
-        msg.obj = displayMessage.replaceAll("_", " ");
-        handlerNetworkExecutorResult.sendMessage(msg);
     }
 
 }

@@ -1,17 +1,11 @@
+
 package com.example.myapplication;
 
-import android.os.Message;
 import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
@@ -45,7 +39,6 @@ public class NetworkExecutor extends Thread {
                 ex.printStackTrace();
             }
 
-
         }
         while (true) {
             try {
@@ -71,7 +64,7 @@ public class NetworkExecutor extends Thread {
                     String fileStr = MainActivity.indexhtml;
 
                     if (urlObjectString.toUpperCase().startsWith("/INDEX.HTML") ||
-                            urlObjectString.toUpperCase().equals("/INDEX.HTM") ||
+                            urlObjectString.toUpperCase().equals("/INDEX.HTML") ||
                             urlObjectString.equals("/")) {
 
                         String headerStr = getHTTP_Header(CODE_OK, "text/html", fileStr.length());
@@ -79,102 +72,6 @@ public class NetworkExecutor extends Thread {
                         out.println(fileStr);
                         out.flush();
                     }
-
-                    if (urlObjectString.toUpperCase().startsWith("/FORWARD")) {
-                        MainActivity.showDisplayMessage("FORWARD");
-                        String headerStr = getHTTP_Header(CODE_OK,
-                                "text/html",
-                                fileStr.length());
-
-                        int cont=MainActivity.getCont();
-                        System.out.println("Contador: "+cont);
-
-                       // byte[] buffer = new byte[4096];
-                       // out.write(buffer, 0, cont);
-                        //out.write(cont);
-
-
-
-                        out.print(headerStr);
-                        out.println(fileStr);
-                        out.flush();
-                    }
-
-                    if (urlObjectString.toUpperCase().startsWith("/CONTADOR")) {
-                        MainActivity.showDisplayMessage("CONTADOR");
-                        String headerStr = getHTTP_Header(CODE_OK,
-                                "CONTADOR",
-                                fileStr.length());
-
-                        int cont=MainActivity.getCont();
-                        out.write(cont);
-                        out.flush();
-                        out.close();
-                      /*  File cont=MainActivity.getContador();
-                        out.print(headerStr);
-                        out.println(fileStr);
-                        out.flush();
-                        MainActivity.showDisplayMessage("CONTADOR");
-                        File cameraFile = MainActivity.getOutputMediaFile();
-                        FileInputStream fis = null;
-                        boolean exist = true;
-                        try {
-                            fis = new FileInputStream(cameraFile);
-                        }catch (FileNotFoundException e) {
-                            exist = false;
-                        }
-
-                        if (exist) {
-                           // String headerStr = getHTTP_Header(CODE_OK,
-                                  //  "CONTADOR",
-                                  //  (int)cameraFile.length());
-                            out.print(headerStr);
-
-                            byte[] buffer = new byte[4096];
-                            int n;
-                            while ( (n = fis.read(buffer)) > 0 ) { // enviar archivo
-                                out.write(buffer, 0, n);
-                            }
-                            out.flush();out.close();
-                        }*/
-                    }
-
-
-
-
-
-
-
-
-
-
-                   /* if (urlObjectString.toUpperCase().startsWith("/CAMERA.JPG") ||
-                            urlObjectString.toUpperCase().startsWith("/CAMERA.")) {
-
-                        MainActivity.showDisplayMessage("CAMERA");
-                        File cameraFile = MainActivity.getOutputMediaFile();
-                        FileInputStream fis = null;
-                        boolean exist = true;
-                        try {
-                            fis = new FileInputStream(cameraFile);
-                        }catch (FileNotFoundException e) {
-                            exist = false;
-                        }
-
-                        if (exist) {
-                            String headerStr = getHTTP_Header(CODE_OK,
-                                    "image/jpeg",
-                                    (int)cameraFile.length());
-                            out.print(headerStr);
-
-                            byte[] buffer = new byte[4096];
-                            int n;
-                            while ( (n = fis.read(buffer)) > 0 ) { // enviar archivo
-                                out.write(buffer, 0, n);
-                            }
-                            out.flush();out.close();
-                        }
-                    }*/
                 }
             }catch (Exception ex){
                 ex.printStackTrace();
